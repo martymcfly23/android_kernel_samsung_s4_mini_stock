@@ -351,11 +351,12 @@ CC		= $(srctree)/scripts/gcc-wrapper.py $(REAL_CC)
 
 CHECKFLAGS     := -D__linux__ -Dlinux -D__STDC__ -Dunix -D__unix__ \
 		  -Wbitwise -Wno-return-void $(CF)
-CFLAGS_MODULE   =
-AFLAGS_MODULE   =
+LIN_FLAG  = -mcpu=cortex-a9 -mtune=cortex-a15 -marm -march=armv7-a -mfpu=neon-vfpv4 -ffast-math -Wno-maybe-uninitialized
+CFLAGS_MODULE   = -DMODULE $(LIN_FLAG)
+AFLAGS_MODULE   = -DMODULE $(LIN_FLAG)
 LDFLAGS_MODULE  =
-CFLAGS_KERNEL	=
-AFLAGS_KERNEL	=
+CFLAGS_KERNEL	= $(LIN_FLAG)
+AFLAGS_KERNEL	= $(LIN_FLAG)
 CFLAGS_GCOV	= -fprofile-arcs -ftest-coverage
 
 
@@ -368,11 +369,15 @@ LINUXINCLUDE    := -I$(srctree)/arch/$(hdr-arch)/include \
 
 KBUILD_CPPFLAGS := -D__KERNEL__
 
+# LINARO OPT
+CFLAGS_A15 = -mcpu=cortex-a9 -mtune=cortex-a15 -marm -march=armv7-a -mfpu=neon-vfpv4
+CFLAGS_MODULO = -fmodulo-sched -fmodulo-sched-allow-regmoves
+KERNEL_MODS	= $(CFLAGS_A15) $(CFLAGS_MODULO)
 KBUILD_CFLAGS   := -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
 		   -fno-strict-aliasing -fno-common \
 		   -Werror-implicit-function-declaration \
 		   -Wno-format-security \
-		   -fno-delete-null-pointer-checks
+		   -fno-delete-null-pointer-checks $(KERNEL_MODS)
 KBUILD_AFLAGS_KERNEL :=
 KBUILD_CFLAGS_KERNEL :=
 KBUILD_AFLAGS   := -D__ASSEMBLY__
