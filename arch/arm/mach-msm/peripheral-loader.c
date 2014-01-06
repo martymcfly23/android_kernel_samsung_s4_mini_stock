@@ -252,10 +252,12 @@ static int segment_is_loadable(const struct elf32_phdr *p)
 /* Sychronize request_firmware() with suspend */
 static DECLARE_RWSEM(pil_pm_rwsem);
 
+#ifdef CONFIG_SEC_DEBUG
 static int check_power_off_and_restart(void)
 {
 	return (system_state == SYSTEM_POWER_OFF || system_state == SYSTEM_RESTART);
 }
+#endif
 
 static int load_image(struct pil_device *pil)
 {
@@ -486,7 +488,8 @@ void pil_put(void *peripheral_handle)
 	if (WARN(!pil->count, "%s: %s: Reference count mismatch\n",
 			pil->desc->name, __func__))
 		goto err_out;
-	if (!strncmp(pil->desc->name, "modem", 5)) {
+	if ( (!strncmp(pil->desc->name, "modem", 5)) || (!strncmp(pil->desc->name, "q6", 2)) ) {
+		printk(KERN_DEBUG "%s: %s::pil->count[%d]", __func__,pil->desc->name, pil->count);
 		if (pil->count == 1)
 			goto unlock;
 	}
