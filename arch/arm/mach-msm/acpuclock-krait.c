@@ -1062,6 +1062,7 @@ static int __init get_pvs_bin(u32 pte_efuse)
 	if (pvs_bin == 0x7)
 		pvs_bin = (pte_efuse >> 13) & 0x7;
 
+	if (pvs_bin <= 0x4) pvs_bin += 2; else if (pvs_bin <= 0x5) pvs_bin += 1;
 	if (pvs_bin == 0x7) {
 		pvs_bin = 0;
 		dev_warn(drv.dev, "ACPU PVS: Defaulting to %d\n", pvs_bin);

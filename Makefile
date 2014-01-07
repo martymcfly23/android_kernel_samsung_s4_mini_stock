@@ -351,7 +351,7 @@ CC		= $(srctree)/scripts/gcc-wrapper.py $(REAL_CC)
 
 CHECKFLAGS     := -D__linux__ -Dlinux -D__STDC__ -Dunix -D__unix__ \
 		  -Wbitwise -Wno-return-void $(CF)
-LIN_FLAG  = -mcpu=cortex-a9 -mtune=cortex-a15 -marm -march=armv7-a -mfpu=neon-vfpv4 -ffast-math -Wno-maybe-uninitialized
+LIN_FLAG  = -mcpu=cortex-a9 -mtune=cortex-a15 -marm -march=armv7-a -mfpu=neon-vfpv4 -ffast-math -ftree-vectorize -Wno-maybe-uninitialized
 CFLAGS_MODULE   = -DMODULE $(LIN_FLAG)
 AFLAGS_MODULE   = -DMODULE $(LIN_FLAG)
 LDFLAGS_MODULE  =
@@ -370,7 +370,7 @@ LINUXINCLUDE    := -I$(srctree)/arch/$(hdr-arch)/include \
 KBUILD_CPPFLAGS := -D__KERNEL__
 
 # LINARO OPT
-CFLAGS_A15 = -mcpu=cortex-a9 -mtune=cortex-a15 -marm -march=armv7-a -mfpu=neon-vfpv4
+CFLAGS_A15 = -mcpu=cortex-a9 -mtune=cortex-a15 -marm -march=armv7-a -mfpu=neon-vfpv4 -ffast-math -ftree-vectorize
 CFLAGS_MODULO = -fmodulo-sched -fmodulo-sched-allow-regmoves
 KERNEL_MODS	= $(CFLAGS_A15) $(CFLAGS_MODULO)
 KBUILD_CFLAGS   := -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
